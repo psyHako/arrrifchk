@@ -1,0 +1,29 @@
+name: Sync sofa catalog to Notion
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository files
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sync sofas to Notion
+        run: node sync-notion.js
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATA_SOURCE_ID: 75545ee9-d34d-42f5-bfd3-28038e8c876e
+          SITE_BASE_URL: https://psyhako.github.io/arrrifhcks-site
